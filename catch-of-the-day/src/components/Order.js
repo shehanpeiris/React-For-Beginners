@@ -5,6 +5,9 @@ class Order extends React.Component {
   renderOrder = key => {
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
+    // Was running into problems with renderOrder breaking while waiting to pull state from Firebase.
+    // Make sure fish are loaded (from Firebase) before renderOrder function continues.
+    if (!fish) return null;
     const isAvailable = fish.status === "available";
     if (!isAvailable) {
       return <li key={key }>Sorry {fish ? fish.name : "fish"} is no longer available.</li>;

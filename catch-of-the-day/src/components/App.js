@@ -15,10 +15,21 @@ class App extends React.Component {
 
   componentDidMount() {
     const { params } = this.props.match;
+    // First we need to reinstate our localStorage. Otherwise order data stored in localStorage is not persistent
+    const localStorageRef = localStorage.getItem(params.storeid);
+    console.log(localStorageRef);
+    if (localStorageRef) {
+      this.setState({order: JSON.parse(localStorageRef)})
+    };
     this.ref = base.syncState(`${params.storeid}/fishes`, {
       context: this,
       state: "fishes"
     });
+  };
+
+  componentDidUpdate() {
+    console.log(this.state.order);
+    localStorage.setItem(this.props.match.params.storeid, JSON.stringify(this.state.order));
   };
 
   componentWillUnmount() {
